@@ -1,0 +1,106 @@
+﻿<Window x:Class="DrWpf.DemoApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:src="clr-namespace:DrWpf.DemoApp"
+            xmlns:dw="clr-namespace:DrWPF.Windows.Controls;assembly=DrWpf" 
+        xmlns:dwd="clr-namespace:DrWPF.Windows.Data;assembly=DrWpf" 
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <dwd:ObservableStyleDictionary x:Key="ButtonStyles" />
+        <DataTemplate x:Key="ButtonTemplate">
+            <Button Style="{Binding Value}">Sample</Button>
+        </DataTemplate>
+        <DataTemplate x:Key="StyleNameTemplate">
+            <TextBlock Text="{Binding Key}" />
+        </DataTemplate>
+    </Window.Resources>
+
+    <TabControl>
+        <TabItem Header="LoopPanel">
+            <TabItem.Resources>
+                <src:CharacterCollection x:Key="Characters">
+                    <src:Character First="Bart" Last="Simpson" Age="10" Gender="Male" Image="images/bart.png" />
+                    <src:Character First="Dr. WPF" Last="" Age="37" Gender="Unknown" Image="images/drwpf.png" />
+                    <src:Character First="Homer" Last="Simpson" Age="38" Gender="Male" Image="images/homer.png" />
+                    <src:Character First="Lisa" Last="Simpson" Age="8" Gender="Female" Image="images/lisa.png" />
+                    <src:Character First="Maggie" Last="Simpson" Age="0" Gender="Female" Image="images/maggie.png" />
+                    <src:Character First="Marge" Last="Simpson" Age="38" Gender="Female" Image="images/marge.png" />
+                </src:CharacterCollection>
+                <DataTemplate DataType="{x:Type src:Character}">
+                    <StackPanel Orientation="Vertical" Margin="5" Background="Transparent">
+                        <TextBlock FontWeight="Bold" Text="{Binding First}"
+            TextAlignment="Center" />
+                        <Image Margin="0,5,0,0" Source="{Binding Image}" Stretch="Fill" />
+                    </StackPanel>
+                </DataTemplate>
+       
+            </TabItem.Resources>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <dw:LoopingListBox x:Name="llb" Margin="10"
+        ItemsSource="{Binding Source={StaticResource Characters}}" 
+        ItemContainerStyle="{StaticResource CharacterContainerStyle}" />
+
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="10,0,10,10">
+                    <TextBlock Width="50" Text="Offset" />
+                    <Slider x:Name="slider" Width="300" 
+          Minimum="-30" Maximum="30" Value="{Binding Offset, ElementName=llb}" />
+                    <TextBlock Width="50" Text="{Binding Value, ElementName=slider}" />
+                </StackPanel>
+            </Grid>
+
+        </TabItem>
+        <TabItem Header="Button Styles">
+            <!--<dwd:ObservableStyleDictionary x:Key="ButtonStyles" />
+                <DataTemplate x:Key="ButtonTemplate">
+                    <Button Style="{Binding Value}">Sample</Button>
+                </DataTemplate>
+                <DataTemplate x:Key="StyleNameTemplate">
+                    <TextBlock Text="{Binding Key}" />
+                </DataTemplate>-->
+           
+
+            <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="DarkGray" Offset="0" />
+                        <GradientStop Color="LightGray" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ListView Name="StyleListView" Button.Click="AddOrRemoveButton" Background="Transparent"        ItemsSource="{Binding Source={StaticResource ButtonStyles}}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Style Name" DisplayMemberBinding="{Binding Key}" />
+                            <GridViewColumn Width="75" Header="Sample" CellTemplate="{StaticResource ButtonTemplate}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <StackPanel Grid.Column="1">
+                    <ComboBox Name="StyleSelector" Margin="10" SelectedValuePath="Value"
+                              ItemTemplate="{StaticResource StyleNameTemplate}"
+                              ItemsSource="{Binding Source={StaticResource ButtonStyles}}" />
+                    <Button VerticalAlignment="Top" HorizontalAlignment="Center"
+                            Style="{Binding ElementName=StyleSelector, Path=SelectedValue}"
+                            Margin="10" Click="ReloadDictionary">Reload Dictionary</Button>
+                </StackPanel>
+            </Grid>
+
+        </TabItem>
+    </TabControl>
+</Window>

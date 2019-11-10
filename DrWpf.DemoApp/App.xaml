@@ -1,0 +1,15 @@
+﻿<Application x:Class="DrWpf.DemoApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DrWpf.DemoApp"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/DrWpf.DemoApp;component/Themes/Generic.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/DrWpf;component/Themes/ButtonStyles.xaml" ></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Application.Resources>
+</Application>
